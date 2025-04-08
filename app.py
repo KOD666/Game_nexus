@@ -1,72 +1,79 @@
-from flask import Flask, render_template, redirect, url_for, request, flash, jsonify, session
+from flask import Flask, render_template, request, redirect, url_for, flash, session
+from werkzeug.security import generate_password_hash, check_password_hash
+from pymongo import MongoClient
+import os
+
 
 app = Flask(__name__)
-app.secret_key = 'your_super_secret_key_123'
+app.secret_key = 'supersecretkey'
 
-# temp
-users = {
-    'user@example.com': 'password123'
-}
 
-@app.route('/')
-def register():
-    return render_template('auth/game-register.html')
+client = MongoClient("mongodb://localhost:27017/")
+db = client['gamezone']
+users_collection = db['users']
 
-@app.route('/alert_message')
-def alert_message():
-    message = "Invalid username or password. Please try again!'"
-    return jsonify(message=message)
 
-@app.route('/login')
+def create_user(name, email, password):
+    hashed_password = generate_password_hash(password)
+    users_collection.insert_one({
+        'name': name,
+        'email': email,
+        'password': hashed_password
+    })
+
+def find_user_by_email(email):
+    return users_collection.find_one({'email': email})
+
+
+@app.route('/', methods=['GET', 'POST'])
 def login():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+
+        user = find_user_by_email(email)
+
+        if user and check_password_hash(user['password'], password):
+            session['user'] = user['name']
+            session['email'] = user['email']
+            return redirect(url_for('home'))
+        else:
+            flash('Invalid email or password')
+
     return render_template('auth/login.html')
 
 @app.route('/register', methods=['GET', 'POST'])
-def handle_register():
+def register():
     if request.method == 'POST':
-        name = request.form.get('name')
-        email = request.form.get('email')
-        password = request.form.get('password')
-        confirm_password = request.form.get('confirm_password')
+        name = request.form['name']
+        email = request.form['email']
+        password = request.form['password']
+        confirm = request.form['confirm_password']
 
-        if password == confirm_password:
-            users[email] = password
-            flash("Registration successful! Please log in.")
-            return redirect(url_for('login'))
-        else:
-            flash("Passwords do not match!")
+        if password != confirm:
+            flash('Passwords do not match')
             return redirect(url_for('register'))
-    
-    return redirect(url_for('register'))
 
-@app.route('/login', methods=['GET', 'POST'])
-def handle_login():
-    if request.method == 'POST':
-        email = request.form.get('email')
-        password = request.form.get('password')
+        if find_user_by_email(email):
+            flash('Email already registered')
+            return redirect(url_for('register'))
 
-        if email in users and users[email] == password:
-            session['user'] = email
-            return redirect(url_for('home'))
-        else:
-            flash("Invalid email or password.")
-            return redirect(url_for('login'))
+        create_user(name, email, password)
+        flash('Registration successful! Please login.')
+        return redirect(url_for('login'))
 
-    return render_template('auth/login.html')
+    return render_template('auth/register.html')
 
 @app.route('/home')
 def home():
-    
     if 'user' not in session:
-        flash("Please log in first.")
         return redirect(url_for('login'))
-
-    return render_template('home.html')
+    return render_template('home.html', username=session['user'])
 
 @app.route('/logout')
 def logout():
-    session.pop('user', None)
-    flash("You have been logged out.")
+    session.clear()
+    flash('You have been logged out')
     return redirect(url_for('login'))
 
 if __name__ == '__main__':

@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
+    <title>Game Nexus - Your Gaming Hub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -295,18 +296,16 @@
             }
         }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    
     <nav class="navbar">
-        <a href="#" class="logo">GameZone</a>
+        <a href="#" class="logo">GAME NEXUS</a>
         <ul class="nav-links">
             <li class="active"><a href="#">Home</a></li>
             <li><a href="#">Games</a></li>
+            <li><a href="#">Library</a></li>
             <li><a href="#">Community</a></li>
-            <li><a href="#">Profile</a></li>
-            <li><a href="#">Logout</a></li>
+            <li><a href="{{ url_for('logout') }}">Logout</a></li>
         </ul>
         <div class="hamburger">
             <span></span>
@@ -314,92 +313,74 @@
             <span></span>
         </div>
     </nav>
-    
-    
+
     <div class="main-content">
-        <div class="welcome-section">
-            <h1>Welcome to GameZone</h1>
-            <p>Discover new games, connect with fellow gamers, and level up your gaming experience.</p>
-        </div>
-        
-        
+        <section class="welcome-section">
+            <h1>Welcome to Game Nexus, {{ username }}!</h1>
+            <p>Your ultimate gaming destination where you can discover, track, and connect with your favorite games and players.</p>
+        </section>
+
         <div class="cards-container">
             <div class="card">
                 <div class="card-header">
                     <div class="card-icon">
                         <i class="fas fa-gamepad"></i>
                     </div>
-                    <h3 class="card-title">Featured Games</h3>
+                    <h3 class="card-title">Trending Games</h3>
                 </div>
                 <p class="card-content">
-                    Explore our collection of top-rated games handpicked for you. From action-packed adventures to strategic challenges, find your next favorite game.
+                    Check out what games are trending in the community right now. Stay updated with the latest releases and most popular titles.
                 </p>
-                <a href="#" class="card-button">Browse Games</a>
+                <a href="#" class="card-button">Explore Now</a>
             </div>
-            
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-icon">
-                        <i class="fas fa-trophy"></i>
-                    </div>
-                    <h3 class="card-title">Tournaments</h3>
-                </div>
-                <p class="card-content">
-                    Join exciting tournaments and compete with players around the world. Show off your skills and win amazing prizes in our weekly competitions.
-                </p>
-                <a href="#" class="card-button">Join Now</a>
-            </div>
-            
+
             <div class="card">
                 <div class="card-header">
                     <div class="card-icon">
                         <i class="fas fa-users"></i>
                     </div>
-                    <h3 class="card-title">Community</h3>
+                    <h3 class="card-title">Community Events</h3>
                 </div>
                 <p class="card-content">
-                    Connect with like-minded gamers, share experiences, and discuss strategies. Our vibrant community welcomes players of all levels.
+                    Join upcoming gaming tournaments, challenges, and events. Connect with other gamers and show off your skills.
                 </p>
-                <a href="#" class="card-button">Join Community</a>
+                <a href="#" class="card-button">Join Events</a>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h3 class="card-title">Your Achievements</h3>
+                </div>
+                <p class="card-content">
+                    Track your gaming progress and showcase your achievements. Compare stats with friends and climb the leaderboards.
+                </p>
+                <a href="#" class="card-button">View Stats</a>
             </div>
         </div>
     </div>
-    
+
     <footer>
         <div class="footer-content">
-            <p>© 2025 GameZone. All rights reserved.</p>
+            <p>&copy; 2025 Game Nexus. All rights reserved.</p>
             <div class="social-links">
-                <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
-                <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-                <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
                 <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-twitch"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
             </div>
         </div>
     </footer>
 
     <script>
+        // Mobile menu toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
         
-        document.querySelector('.hamburger').addEventListener('click', function() {
-            document.querySelector('.nav-links').classList.toggle('active');
-            
-            const bars = document.querySelectorAll('.hamburger span');
-            bars[0].classList.toggle('rotate-down');
-            bars[1].classList.toggle('fade-out');
-            bars[2].classList.toggle('rotate-up');
-        });
-        
-        
-        const cards = document.querySelectorAll('.card');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = 1;
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, { threshold: 0.2 });
-        cards.forEach(card => {
-            observer.observe(card);
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
         });
     </script>
 </body>
