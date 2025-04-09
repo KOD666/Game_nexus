@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Nexus - Game Descriptions</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #483D8B;
+            background-image: linear-gradient(135deg, #483D8B 0%, #32274F 100%);
+            color: #fff;
+            min-height: 100vh;
+        }
+        
+        .navbar {
+            background-color: rgba(30, 25, 50, 0.85);
+            padding: 15px 30px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #00E676;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .logo:hover {
+            text-shadow: 0 0 15px rgba(0, 230, 118, 0.8);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 25px;
+            position: relative;
+        }
+        
+        .nav-links li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 8px 0;
+        }
+        
+        .nav-links li a:hover {
+            color: #00E676;
+        }
+        
+        .nav-links li::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background-color: #00E676;
+            bottom: 0;
+            left: 0;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links li:hover::after {
+            width: 100%;
+        }
+        
+        .nav-links .active a {
+            color: #00E676;
+        }
+        
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+        
+        .hamburger span {
+            height: 3px;
+            width: 25px;
+            background: #fff;
+            margin: 4px 0;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+        
+        .main-content {
+            padding: 40px 30px;
+        }
+        
+        .page-title {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeIn 1s ease-in-out;
+        }
+        
+        .page-title h1 {
+            font-size: 36px;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+        
+        .page-title p {
+            font-size: 18px;
+            max-width: 700px;
+            margin: 0 auto;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .game-card {
+            display: flex;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            margin-bottom: 30px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            animation: slideUp 0.6s ease-out;
+        }
+        
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .game-image {
+            width: 300px;
+            height: 300px;
+            position: relative;
+        }
+        
+        .cyberpunk-game {
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+                        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 300 300'%3E%3Crect width='300' height='300' fill='%23330066'/%3E%3Ctext x='150' y='150' font-family='Arial' font-size='40' text-anchor='middle' dominant-baseline='middle' fill='%2300E676'%3ECyberpunk%3C/text%3E%3C/svg%3E");
+            background-size: cover;
+        }
+        
+        .space-game {
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+                        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 300 300'%3E%3Crect width='300' height='300' fill='%23000033'/%3E%3Ctext x='150' y='150' font-family='Arial' font-size='40' text-anchor='middle' dominant-baseline='middle' fill='%2300E676'%3ESpace%3C/text%3E%3C/svg%3E");
+            background-size: cover;
+        }
+        
+        .fantasy-game {
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+                        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 300 300'%3E%3Crect width='300' height='300' fill='%23331100'/%3E%3Ctext x='150' y='150' font-family='Arial' font-size='40' text-anchor='middle' dominant-baseline='middle' fill='%2300E676'%3EFantasy%3C/text%3E%3C/svg%3E");
+            background-size: cover;
+        }
+        
+        .game-details {
+            padding: 25px;
+            flex: 1;
+        }
+        
+        .game-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #00E676;
+        }
+        
+        .game-meta {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+        
+        .meta-item {
+            background: rgba(0, 230, 118, 0.15);
+            padding: 5px 12px;
+            border-radius: 20px;
+            margin: 0 10px 10px 0;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .meta-item i {
+            margin-right: 5px;
+            color: #00E676;
+        }
+        
+        .game-description {
+            margin-bottom: 20px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .game-features {
+            margin-bottom: 20px;
+        }
+        
+        .features-title {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #00E676;
+        }
+        
+        .features-list {
+            list-style: none;
+        }
+        
+        .features-list li {
+            padding: 5px 0;
+            position: relative;
+            padding-left: 25px;
+        }
+        
+        .features-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #00E676;
+            font-weight: bold;
+        }
+        
+        .game-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #00E676;
+            color: #000;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        .game-button:hover {
+            background-color: #00C853;
+            transform: scale(1.05);
+        }
+        
+        .rating {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.6);
+            color: #00E676;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        
+        footer {
+            background-color: rgba(30, 25, 50, 0.9);
+            padding: 30px;
+            text-align: center;
+            margin-top: 50px;
+        }
+        
+        .footer-content p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 15px;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .social-link {
+            height: 40px;
+            width: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .social-link:hover {
+            background-color: #00E676;
+            transform: translateY(-5px);
+        }
+        
+        .social-link i {
+            color: #fff;
+            font-size: 20px;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @media (max-width: 950px) {
+            .game-card {
+                flex-direction: column;
+            }
+            
+            .game-image {
+                width: 100%;
+                height: 200px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                background-color: rgba(30, 25, 50, 0.95);
+                backdrop-filter: blur(10px);
+                top: 70px;
+                left: -100%;
+                height: 100vh;
+                width: 100%;
+                flex-direction: column;
+                align-items: center;
+                padding-top: 50px;
+                transition: all 0.5s ease;
+            }
+            
+            .nav-links.active {
+                left: 0;
+            }
+            
+            .nav-links li {
+                margin: 20px 0;
+            }
+            
+            .hamburger {
+                display: flex;
+            }
+            .banner-image {
+            height: 300px;
+            background-image: url("C:\Users\asusn\Downloads\cyberpunk.png");
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .banner-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(72, 61, 139, 0.9), rgba(50, 39, 79, 0.7));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .banner-overlay h1 {
+            font-size: 42px;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="#" class="logo">GAME NEXUS</a>
+        <ul class="nav-links">
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li class="active"><a href="{{ url_for('game_desc') }}">Games</a></li>
+            <li><a href="#">Library</a></li>
+            <li><a href="#">Community</a></li>
+            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+        </ul>
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+    <div class="banner-image">
+        <div class="banner-overlay">
+            <h1>Discover Amazing Games</h1>
+        </div>
+    </div>
+    <div class="main-content">
+        <section class="page-title">
+            <h1>Trending Games</h1>
+            <p>Discover the most popular and highly-rated games in our community</p>
+        </section>
+
+        <section class="games-container">
+            {% for game in games %}
+            <div class="game-card">
+                <div class="game-image {{ game.image_class }}">
+                    <div class="rating">{{ game.rating }} / 5.0</div>
+                </div>
+                <div class="game-details">
+                    <h2 class="game-title">{{ game.title }}</h2>
+                    <div class="game-meta">
+                        <span class="meta-item"><i class="fas fa-gamepad"></i> {{ game.genre }}</span>
+                        <span class="meta-item"><i class="fas fa-code"></i> {{ game.developer }}</span>
+                        <span class="meta-item"><i class="fas fa-calendar-alt"></i> {{ game.release_date }}</span>
+                    </div>
+                    <p class="game-description">{{ game.description }}</p>
+                    <div class="game-features">
+                        <h3 class="features-title">Key Features:</h3>
+                        <ul class="features-list">
+                            {% for feature in game.features %}
+                            <li>{{ feature }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <a href="#" class="game-button">Learn More</a>
+                </div>
+            </div>
+            {% endfor %}
+        </section>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2025 Game Nexus. All rights reserved.</p>
+            <div class="social-links">
+                <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-twitch"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>
